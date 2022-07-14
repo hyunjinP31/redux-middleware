@@ -3,11 +3,26 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { applyMiddleware, legacy_createStore as createStore } from 'redux';
+import rootReducer from './modules';
+import myLogger from './middlewares/myLogger';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import ReduxThunk from 'redux-thunk';
+import { BrowserRouter } from 'react-router-dom';
+
+
+//미들웨어 적용하기 applyMiddleware(미들웨어이름)
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk, myLogger)))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
